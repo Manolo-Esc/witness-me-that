@@ -1,0 +1,55 @@
+# Dependencies
+node_modules/
+
+# Environment variables and local secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.mnemonic
+secrets/
+
+# Hardhat and Ethereum build outputs
+artifacts/
+cache/
+typechain/
+typechain-types/
+coverage/
+coverage.json
+gas-report.txt
+hardhat_node.log
+ignition/deployments/
+ignition/cache/
+deployments/
+broadcast/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Local caches
+.npm/
+.eslintcache
+.nyc_output/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Local scratch/output files
+tmp/
+temp/
+dist/
+build/
+
+# Codex/local workspace metadata
+.agents/
+.codex/
