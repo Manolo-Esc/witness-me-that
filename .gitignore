@@ -53,3 +53,6 @@ build/
 # Codex/local workspace metadata
 .agents/
 .codex/
+
+# Hardhat local node PID (npm run node:start)
+.hardhat-node.pid
