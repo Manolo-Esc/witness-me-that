@@ -1,12 +1,32 @@
 # witness-me-that
 
-A hands-on tutorial, aimed at people with no blockchain background, on **how to
-store proofs on a blockchain**: recording the hash of a file together with its
-date and author, so that afterwards nobody can alter that record.
+A hands-on tutorial, aimed at people with no blockchain background, on **how to store proofs on a blockchain**. Ejemplos de casos de uso podrían ser guardar registros de 
+donaciones y pagos de una ONG, de documentación remitida por los participantes en un concurso público, información sobre NFTs y trofeos en juegos... 
+
+La idea feliz es que en blockchains el coste económico es directamente proporcional al tamaño de la información almacenada. El precio de cada byte guardado es alto. Así que la solución no es guardar el documento original sino su **hash, metadata opcional y un link** al fichero. Alternativamente se podría usar [IPFS](https://ipfs.tech/) para almacenar los ficheros y en vez de guardar en el blockchain el hash y el URL se guardaría el CID. La diferencia está en dónde se pone la responsabilidad de que el archivo en sí esté disponible dentro de un tiempo: posiblemente alguien es propietario exclusivo del fichero en un URL pero cualquiera podría pinear un CID para que no borre.
+
+Para escribir en la blockchain se usa un **smart contract**. Un smart contract es un programa que vive dentro de la blockchain. Se publica una vez y desde ese momento:
+  - Su código es inmutable: no se puede parchear ni actualizar. Lo que despliegas es lo que habrá para siempre.
+  - Cualquiera puede llamar a sus funciones públicas, sin pedir permiso ni pasar por tu servidor. El código es visible y la interfaz, deducible.
+  - Escribir cuesta dinero (gas) y requiere firmar una transacción; leer es gratis y no deja rastro.
+  - Se ejecuta igual para todos: cada nodo de la red corre el mismo código y llega al mismo resultado, y eso es lo que hace que nadie tenga que confiar en ti — ni tú en nadie.
+
+Lo de "contrato" viene de que hace de acuerdo automático: las reglas están escritas en el código y se cumplen solas, sin intermediario que las aplique ni posibilidad de saltárselas. Un smart contract puede custodiar fondos, emitir tokens o coordinar a varias partes; el nuestro hace lo más simple posible, que es llevar un registro: recibe el hash de un documento, un enlace a él, y deja constancia sellada con la fecha del bloque. En este tutorial ese contrato es PaymentRegistry.
+
+El último aspecto a considerar es la **blockchain** a utilizar. Para este tutorial usaremos smart contracts de Ethereum. Así tendremos varias alternativas para desplegar la solución en producción. Podremos usar la propia Ethereum para máxima seguridad aunque es la solución más cara. Otra alternativa es usar un blockchain *Layer 2*, por ejemplo Arbitrum, OP Mainnet, Base, or zkSync. Los blockchain L2:   
+  - They execute transactions outside Ethereum Mainnet, reducing the amount of computation that needs to be performed directly on L1.
+  - They batch and compress transactions, allowing many L2 transactions to share the cost of publishing data to Ethereum.
+  - They use Ethereum as a settlement layer, with the exact security guarantees depending on their architecture and implementation. 
+  - They publish information to Ethereum that allows the L2 state to be verified or reconstructed.
+  - Their transaction fees are generally much lower than Ethereum Mainnet fees.
+
+
 
 > # **This is a work in progress, not yet finished. Please come back later**
 
 
+
+El código en sí para hacerlo es de apenas una docena de líneas. Par
 
 
 The example contract, [`contracts/PaymentRegistry.sol`](contracts/PaymentRegistry.sol),
