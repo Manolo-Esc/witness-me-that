@@ -39,7 +39,9 @@ contract PaymentRegistry {
         require(bytes(_fileURL).length > 0, "File URL cannot be empty");
 
         // `payments[msg.sender]` accesses (or implicitly creates) the caller's array.
-        // `msg.sender` is the address that originated this call
+        // `msg.sender` is the immediate caller of this function. In this tutorial it is
+        // usually the wallet running the script; if another contract called this
+        // function, `msg.sender` would be that contract.
         payments[msg.sender].push(Payment(_fileHash, _fileURL, block.timestamp, msg.sender));
 
         // `emit` fires the event and writes it into the transaction log
