@@ -10,7 +10,7 @@
     "node": "hardhat node",
     "node:start": "hardhat node > hardhat_node.log 2>&1 & echo $! > .hardhat-node.pid; echo \"Local node starting at http://127.0.0.1:8545 (PID $(cat .hardhat-node.pid), log in hardhat_node.log)\"",
     "node:stop": "if [ -f .hardhat-node.pid ] && kill $(cat .hardhat-node.pid) 2>/dev/null; then rm -f .hardhat-node.pid; echo \"Local node stopped\"; else rm -f .hardhat-node.pid; echo \"No local node was running\"; fi",
-    "deploy": "hardhat run scripts/deploy.js",
+    "wallet:create": "hardhat run scripts/create-wallet.js",
     "deploy:local": "hardhat run scripts/deploy.js --network localhost",
     "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia",
     "interact:local": "hardhat run scripts/interact.js --network localhost",

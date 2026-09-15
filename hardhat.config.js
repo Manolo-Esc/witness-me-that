@@ -1,34 +1,26 @@
 require("@nomicfoundation/hardhat-toolbox");
-require("dotenv").config();
+require("dotenv").config(); // Load environment variables from .env file
 
 const { ALCHEMY_API_URL, PRIVATE_KEY } = process.env;
+const hasValidPrivateKey = /^0x[0-9a-fA-F]{64}$/.test(PRIVATE_KEY || "");
 
 // Work out which network the command was invoked against (--network <name>).
 const networkFlagIndex = process.argv.indexOf("--network");
 const targetNetwork = networkFlagIndex !== -1 ? process.argv[networkFlagIndex + 1] : "hardhat";
+const sepoliaAccounts = hasValidPrivateKey ? [PRIVATE_KEY] : [];
 
-// Sepolia needs credentials that live in .env (which is never committed).
-// If they are missing we print a clear message, but only when Sepolia is
-// actually the target: that way the project still compiles and runs locally
-// without any keys at all.
+// Sepolia needs credentials that live in .env. If they are missing we print a message
 if (targetNetwork === "sepolia") {
   const missing = [
     !ALCHEMY_API_URL && "ALCHEMY_API_URL",
-    !PRIVATE_KEY && "PRIVATE_KEY"
+    !PRIVATE_KEY && "PRIVATE_KEY",
+    PRIVATE_KEY && !hasValidPrivateKey && "a valid PRIVATE_KEY"
   ].filter(Boolean);
 
   if (missing.length > 0) {
     console.error(`
 Cannot use the Sepolia network: ${missing.join(" and ")} missing from your .env file
-
-  1. Copy the template:   cp .env.example .env
-  2. Edit .env and fill in:
-       ALCHEMY_API_URL  the HTTPS URL of your Alchemy app pointing at Sepolia
-       PRIVATE_KEY      the private key of a THROWAWAY test account
-                        (never an account holding real funds)
-  3. Get some free test ETH from a faucet (see the README for a list)
-
-In the meantime you can try everything locally, with no keys and no cost:
+You can try everything locally, with no keys and no cost:
        npm run node:start
        npm run deploy:local
 `);
@@ -41,7 +33,7 @@ module.exports = {
   networks: {
     sepolia: {
       url: ALCHEMY_API_URL || "",
-      accounts: PRIVATE_KEY ? [PRIVATE_KEY] : [],
+      accounts: sepoliaAccounts,
       chainId: 11155111
     }
   }
